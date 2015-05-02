@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!--build file -->
+<project name="usercenter" basedir="./project" default="publish">
+
+	<!--svn properties are in conf.svn.properties -->
+	<property file="usercenter.svn.properties" />
+	<property name="svnsrcurl" value="http://218.206.178.27/RCS/src/im/server/usercenter/" />
+	<property name="svnant.repository.user" value="wangqi" />
+	<property name="svnant.repository.passwd" value="wangqi" />
+
+	<!--dir properties-->
+	<property name="usercenter" value="${basedir}/usercenter" />
+	<property name="classes" value="${usercenter}/build/classes" />
+	<property name="build" value="${usercenter}/build" />
+	<property name="build.dest" value="${usercenter}/WebContent/WEB-INF/classes" />
+	<property name="build.web" value="${usercenter}/WebContent" />
+	
+	<property name="project.platform" value="stage" />
+
+	<property name="publish.dest" value="{usercenter}/war" />
+	<property name="backup.dest" value="{usercenter}/backup" />
+
+	<!-- tomcat/ant lib info -->
+	<property name="tomcat-home" value="/home/cmcc/programe/apache-tomcat-6.0.28" />
+	<property name="tomcat-lib" value="${tomcat-home}/lib" />
+	<property name="ant-home" value="/home/cmcc/autobuild/apache-ant-1.8.4/" />
+	<property name="ant-lib" value="${ant-home}/lib" />
+
+	<!--lib properties-->
+	<property name="lib" value="${usercenter}/WebContent/WEB-INF/lib" />
+
+	<tstamp>
+		<format property="MYTIME" pattern="yyyyMMddHHmm" locale="zh" />
+	</tstamp>
+
+	<!-- path to the  libraries-->
+	<path id="classpath">
+		<fileset dir="${tomcat-lib}" includes="***.jar">
+		</fileset>
+		<fileset dir="${lib}" includes="***.jar">
+		</fileset>
+	</path>
+
+	<!-- path to the svnant libraries -->
+	<path id="svnant.classpath">
+		<fileset dir="${ant-lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!--  清除原路径下项目文件及war包-->
+	<target name="clean">
+		<delete file="${publish.dest}/usercenter*.war" />
+		<delete dir="${usercenter}" />
+		<echo message="clean" />
+	</target>
+
+
+	<!--  从svn中导出项目 version：当前版本号-->
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="svnant.classpath" />
+
+	<target name="export" depends="clean">
+                <echo message="url: ${svnsrcurl}" />
+		<svn javahl="true" svnkit="true" username="${svnant.repository.user}" password="${svnant.repository.passwd}" failonerror="false">
+			<export srcUrl="${svnsrcurl}" destPath="${usercenter}" revision="HEAD" />
+			<info target="${svnsrcurl}">
+			</info>
+		</svn>
+		<property name="version" value="${svn.info.lastRev}" />
+		<echo message="version: ${version}" />
+	</target>
+
+	<!-- rename and replace -->
+	<target name="replaced" depends="export">
+		<!-- No need replace in this project -->
+	</target>
+	
+	
+	<!--   建立build/classes 路径，并编译class 文件到build/classes 路径下-->
+	<target name="compile" depends="replaced">
+		<mkdir dir="${classes}" />
+		<javac encoding="UTF-8" srcdir="${usercenter}/src" destdir="${classes}">
+			<compilerarg value="-XDignore.symbol.file"/>  
+			<classpath refid="classpath">
+			</classpath>
+		</javac>
+		
+		<!-- 拷贝配置文件-->
+		<copy file="${usercenter}/src/properties/${project.platform}/mysql.properties" tofile="${build.dest}/mysql.properties" />
+		<copy file="${usercenter}/src/properties/${project.platform}/confs.properties" tofile="${build.dest}/confs.properties" />
+		<copy file="${usercenter}/src/log4j.xml" tofile="${build.dest}/log4j.xml" />
+		<copy todir="${build.dest}/com/usercenter/dao/mapper">
+		      <fileset dir="${usercenter}/src/com/usercenter/dao/mapper">
+		      	<include name="*.*"/>
+		      </fileset>
+		 </copy>
+		<!-- 不需要拷贝资源文件-->
+	</target>
+
+	
+	<!--  修改index1.jsp 存入当前版本及时间-->
+	<target name="build_time" depends="compile">
+		<replace file="${usercenter}/WebContent/index.html" encoding="utf-8" token="Buildtime" value="${version}_${MYTIME}" />
+		<echo message="version: ${version}_${MYTIME}" />
+	</target>
+
+
+	<!--  打war 包-->
+	<target name="war" depends="build_time">
+		<war destfile="${build}/usercenter-${MYTIME}-${version}-${project.platform}.war" webxml="${usercenter}/WebContent/WEB-INF/web.xml">
+			<!--  拷贝WebRoot 下除了WEB-INF 和META-INF 的两个文件夹-->
+			<fileset dir="${usercenter}/WebContent" includes="**/*.*" />
+			<!--  拷贝build/classes 下的class 文件-->
+			<classes dir="${classes}" />
+		</war>
+		<echo message="war_${version}_${MYTIME}" />
+	</target>
+	
+	
+	<!--  发布war包 分别拷到tomcat及备份文件夹中-->
+	<target name="publish" depends="war">
+		<echo message="publish" />
+	</target>
+
+
+</project>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="./javadoc" default="zip">
+	<!--svn properties are in conf.svn.properties -->
+	<property file="padata.svn.properties" />
+	<property name="svnsrcurl" value="http://10.1.5.8/RCS/src/trunk/server/padata/" />
+	<property name="svnant.repository.user" value="liduo" />
+	<property name="svnant.repository.passwd" value="liduo123" />
+		
+	<property name="ant-home" value="D:\Program Files\apache-ant-1.9.3" />
+	<property name="ant-lib" value="${ant-home}\lib" />
+	
+	<property name="build.doc" location="${basedir}/doc"></property>
+	<property name="build.src" location="${basedir}/padata"></property>
+	
+	<property name="build.doc.server" location="${build.doc}/server"></property>
+	<property name="src.dir" location="${build.src}/src"></property>
+	<property name="lib.dir" location="${build.src}/WebContent/WEB-INF/lib"></property>
+	<property name="project.name" value="padata_server_api"></property>
+	<property name="zip.name" value="server.zip"></property>
+	<property name="zip.path" location="${build.doc}/${zip.name}"></property>
+	
+	<target name="init">
+		<delete dir="${build.doc.server}"/>
+		<mkdir dir="${build.doc.server}"/>
+		<delete dir="${zip.path}"/>
+		<delete dir="${build.src}"/>
+	</target>
+	<!-- path to the svnant libraries -->
+		<path id="svnant.classpath">
+			<fileset dir="${ant-lib}">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+	<path id="compile-path">
+		<fileset dir="${lib.dir}" includes="*.jar"></fileset>
+	</path>
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="svnant.classpath" />
+	<target name="export" depends="init">
+		<echo message="url: ${svnsrcurl}" />
+		<svn javahl="true" svnkit="true" username="${svnant.repository.user}" password="${svnant.repository.passwd}" failonerror="false">
+			<export srcUrl="${svnsrcurl}" destPath="${build.src}" revision="HEAD" />
+			<info target="${svnsrcurl}">
+			</info>
+		</svn>
+	</target>
+	<target name="doc" depends="export">
+		<javadoc sourcepath="${src.dir}" 
+			private="true" windowtitle="SERVER API" 
+			use="true" packagenames="com.padata.service.server.*" destdir="${build.doc.server}"
+					 charset="UTF-8" docencoding="UTF-8" encoding="UTF-8" 
+			excludepackagenames="com.padata.service.server.impl"  classpathref="compile-path"
+			>
+			</javadoc>
+	</target>
+	<target name="zip" depends="doc">
+			<zip destfile="${zip.path}" duplicate="preserve">
+				<zipfileset dir="${build.doc.server}" 
+					includes="**/*.*" 
+					></zipfileset>
+			</zip>
+		<delete dir="${build.doc.server}"/>
+	</target>
+</project>

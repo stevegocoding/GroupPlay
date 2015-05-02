@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- 控制台 -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+			<param name="LevelMin" value="DEBUG"/>    
+			<param name="LevelMax" value="ERROR"/>    
+		</filter>   
+	</appender>
+
+	<!-- common-default -->
+	<appender name="DEFAULT-APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/usercenter/common-default.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<param name="ImmediateFlush" value="true" /> 	
+		<param name="encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value=" %d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+			<param name="LevelMin" value="DEBUG" />    
+			<param name="LevelMax" value="ERROR" />    
+		</filter> 
+	</appender>
+	
+	<!-- common-error -->
+	<appender name="ERROR-APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/usercenter/common-error.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<param name="ImmediateFlush" value="true" /> 	
+		<param name="threshold" value="error" />
+		<param name="encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value=" %d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+	</appender>	
+	
+	<!-- usercenter-dao -->
+	<appender name="USERCENTER-DAO-APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/usercenter/usercenter-dao.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<param name="ImmediateFlush" value="true" /> 	
+		<param name="encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value=" %d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+			<param name="LevelMin" value="DEBUG" />    
+			<param name="LevelMax" value="ERROR" />    
+		</filter> 
+	</appender>
+
+	<!-- usercenter-manage -->
+	<appender name="USERCENTER-MANAGE-APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/usercenter/usercenter-manage.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<param name="ImmediateFlush" value="true" /> 	
+		<param name="encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value=" %d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+			<param name="LevelMin" value="DEBUG" />    
+			<param name="LevelMax" value="ERROR" />    
+		</filter> 
+	</appender>
+	
+	<!-- usercenter-service -->
+	<appender name="USERCENTER-SERVICE-APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/usercenter/usercenter-service.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<param name="ImmediateFlush" value="true" /> 	
+		<param name="encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value=" %d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+			<param name="LevelMin" value="DEBUG" />    
+			<param name="LevelMax" value="ERROR" />    
+		</filter> 
+	</appender>	
+	
+	<!-- usercenter-message -->
+	<appender name="USERCENTER-MESSAGE-APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/usercenter/usercenter-message.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<param name="ImmediateFlush" value="true" /> 	
+		<param name="encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value=" %d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+			<param name="LevelMin" value="DEBUG" />    
+			<param name="LevelMax" value="ERROR" />    
+		</filter> 
+	</appender>	
+
+
+
+	<!-- [应用Logger] dao -->
+	<logger name="com.usercenter.dao" additivity="false">
+		<level value="info" />
+		<appender-ref ref="USERCENTER-DAO-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	
+	<!-- [应用Logger] dto -->
+	<logger name="com.usercenter.dto" additivity="false">
+		<level value="info" />
+		<appender-ref ref="USERCENTER-DAO-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	
+	<!-- [应用Logger] manage -->
+	<logger name="com.usercenter.manage" additivity="false">
+		<level value="info" />
+		<appender-ref ref="USERCENTER-MANAGE-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	
+		<!-- [应用Logger] util -->
+	<logger name="com.usercenter.util" additivity="false">
+		<level value="info" />
+		<appender-ref ref="USERCENTER-MANAGE-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	
+	<!-- [应用Logger] service -->
+	<logger name="com.usercenter.service" additivity="false">
+		<level value="info" />
+		<appender-ref ref="USERCENTER-SERVICE-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	
+	<!-- [应用Logger] message -->
+	<logger name="com.usercenter.message" additivity="false">
+		<level value="info" />
+		<appender-ref ref="USERCENTER-MESSAGE-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	
+	<root>
+		<level value="info" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="DEFAULT-APPENDER"/>
+	</root>
+	
+</log4j:configuration>

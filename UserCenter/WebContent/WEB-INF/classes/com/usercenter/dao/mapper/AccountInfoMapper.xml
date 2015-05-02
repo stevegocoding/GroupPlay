@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.usercenter.dao.AccountInfoDaoMapper">
+<resultMap type="AccountInfoPO" id="AccountInfoPOMap">  
+</resultMap>  
+<!--  新增记录  -->  
+    <insert id="insert" parameterType="AccountInfoPO" useGeneratedKeys="false" keyProperty="account">  
+    	insert into uc_accountinfo(account,accountname,password,pinpassword,phone,email,phoneauth,emailauth,nickname,createtime,lastmodifytime) 
+    	values(#{account},#{accountname},#{password},#{pinpassword},#{phone},#{email},#{phoneauth},#{emailauth},#{nickname},#{createtime},#{lastmodifytime}) 
+    </insert>  
+    
+<!--  批量新增  -->   
+    <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="false" keyProperty="account">
+	  		insert into uc_accountinfo(account,accountname,password,pinpassword,phone,email,phoneauth,emailauth,nickname,createtime,lastmodifytime) 
+		 	values
+	  	<foreach collection="list" item="item" index="index" separator=",">
+		  	(#{item.account},#{item.accountname},#{item.password},#{item.pinpassword},#{item.phone},
+		  	#{item.email},#{item.phoneauth},#{item.emailauth},#{item.nickname},#{item.createtime},#{item.lastmodifytime}) 
+	  	</foreach>
+   </insert>
+  
+<!--  删除记录  -->      
+    <delete id="deleteByAccount" parameterType="long">  
+       delete from uc_accountinfo where account = #{account}  
+    </delete>  
+ 
+<!--  根据平台删除记录  -->      
+    <delete id="deleteByName" parameterType="String">  
+       delete from uc_accountinfo where accountname = #{accountname}  
+    </delete>      
+
+<!--  修改记录  -->      
+    <update id="update" parameterType="map">  
+    	update uc_accountinfo 
+    		<set>
+    			<if test="accountinfo.accountname != null and accountinfo.accountname != '' ">
+    				accountname=#{accountinfo.accountname},
+    			</if>
+    			<if test="accountinfo.password != null and accountinfo.password != '' ">
+    				password=#{accountinfo.password},
+    			</if>
+    			<if test="accountinfo.pinpassword != null and accountinfo.pinpassword != '' ">
+    				pinpassword=#{accountinfo.pinpassword},
+    			</if>
+    			<if test="accountinfo.phone != null and accountinfo.phone != '' ">
+    				phone=#{accountinfo.phone},
+    			</if>
+    			<if test="accountinfo.email != null and accountinfo.email != '' ">
+    				email=#{accountinfo.email},
+    			</if>
+    			<if test="accountinfo.password != null and accountinfo.password != '' ">
+    				phoneauth=#{accountinfo.phoneauth},
+    			</if>
+    			<if test="accountinfo.emailauth != null and accountinfo.emailauth != '' ">
+    				emailauth=#{accountinfo.emailauth},
+    			</if>
+    			<if test="accountinfo.nickname != null and accountinfo.nickname != '' ">
+    				nickname=#{accountinfo.nickname},
+    			</if>
+    			lastmodifytime=#{accountinfo.lastmodifytime}
+    		</set>
+		  	where account=#{accountinfo.account}  
+    </update>
+    
+    
+    <update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="accountinfo" index="index" open="" close="" separator=";">
+                update uc_accountinfo  
+                <set>
+			    	<if test="accountinfo.accountname != null and accountinfo.accountname != '' ">
+	    				accountname=#{accountinfo.accountname},
+	    			</if>
+	    			<if test="accountinfo.password != null and accountinfo.password != '' ">
+	    				password=#{accountinfo.password},
+	    			</if>
+	    			<if test="accountinfo.pinpassword != null and accountinfo.pinpassword != '' ">
+	    				pinpassword=#{accountinfo.pinpassword},
+	    			</if>
+	    			<if test="accountinfo.phone != null and accountinfo.phone != '' ">
+	    				phone=#{accountinfo.phone},
+	    			</if>
+	    			<if test="accountinfo.email != null and accountinfo.email != '' ">
+	    				email=#{accountinfo.email},
+	    			</if>
+	    			<if test="accountinfo.password != null and accountinfo.password != '' ">
+	    				phoneauth=#{accountinfo.phoneauth},
+	    			</if>
+	    			<if test="accountinfo.emailauth != null and accountinfo.emailauth != '' ">
+	    				emailauth=#{accountinfo.emailauth},
+	    			</if>
+	    			<if test="accountinfo.nickname != null and accountinfo.nickname != '' ">
+	    				nickname=#{accountinfo.nickname},
+	    			</if>
+	    			lastmodifytime=#{accountinfo.lastmodifytime}
+                </set>
+                where account=#{accountinfo.account} 
+         </foreach>
+    </update>
+<!--  根据account查询记录  -->    
+    <select id="selectByAccount" resultType="com.usercenter.dao.po.AccountInfoPO" parameterType="long">  
+        select * from uc_accountinfo where account=#{account}  
+    </select> 
+<!--  根据accountname查询记录  -->    
+    <select id="selectByAccountName" resultType="com.usercenter.dao.po.AccountInfoPO" parameterType="String">  
+        select * from uc_accountinfo where accountname=#{accountname}  
+    </select> 
+<!--  根据accountname查询account  -->    
+    <select id="selectByAccountbyName" resultType="long" parameterType="String">  
+        select account from uc_accountinfo where accountname=#{accountname}  
+    </select>     
+    
+ <!--  根据checkName查询记录是否存在  -->    
+    <select id="checkName" resultType="int" parameterType="String">  
+        select count(1) from uc_accountinfo where accountname=#{accountname}  
+    </select> 
+<!--  根据phone查询记录  -->    
+    <select id="selectByPhone" resultMap="AccountInfoPOMap" parameterType="map">  
+         select * from uc_accountinfo where phone=#{phone}
+    </select>
+
+<!--   获得当前页码指定数量的消息业务信息记录  -->    
+    <select id="selectList" resultMap="AccountInfoPOMap" parameterType="map">  
+         select * from uc_accountinfo limit #{begin},  #{size}
+    </select>
+    
+<!--   获得所有数据总数  -->    
+    <select id="getSize" resultType="int">  
+         select count(*) as count from uc_accountinfo
+    </select>
+
+</mapper> 

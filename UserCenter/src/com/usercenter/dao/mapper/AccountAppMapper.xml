@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.usercenter.dao.AccountAppDaoMapper">
+<resultMap type="AccountAppPO" id="AccountAppPOMap">  
+</resultMap>  
+<!--  新增记录  -->  
+    <insert id="insert" parameterType="AccountAppPO" useGeneratedKeys="true" keyProperty="id">  
+    	insert into uc_accountapp(id,account,appkey,status,nickname,createtime,lastmodifytime) 
+    	values(#{id},#{account},#{appkey},#{status},#{nickname},#{createtime},#{lastmodifytime}) 
+    </insert>  
+    <!--  批量新增  -->   
+    <insert id="insertBatch" parameterType="java.util.List" >
+   		 <selectKey keyProperty="id" order="BEFORE" resultType="int">
+  			SELECT CURRENT_TIMESTAMP()
+  		</selectKey>
+	  		insert into uc_accountapp(id,account,appkey,status,nickname,createtime,lastmodifytime) 
+		 	values
+	  	<foreach collection="list" item="item" index="index" separator=",">
+	  	(#{item.id},#{item.account},#{item.appkey},#{item.status},#{item.nickname},#{item.createtime},#{item.lastmodifytime}) 
+		  	
+	  	</foreach>
+   </insert>
+  
+<!--  删除记录  -->      
+    <delete id="deleteByAccount" parameterType="long">  
+       delete from uc_accountapp where account = #{account}  
+    </delete>  
+ 
+ 
+     <delete id="deleteByuserNames" parameterType="String">  
+     	delete from uc_accountapp where account in (select account from uc_accountinfo where accountname = #{accountname})   and appkey = #{appkey} 
+    </delete>  
+ 
+ 
+<!--  根据appkey删除记录  -->      
+    <delete id="deleteByAppkey" parameterType="String">  
+       delete from uc_accountapp where appkey = #{appkey}  
+    </delete>    
+<!--  根据appkey删除记录  -->      
+    <delete id="deleteByAccountAppkey" parameterType="map">  
+       delete from uc_accountapp where account = #{account} and appkey = #{appkey}  
+    </delete>      
+
+<!--  根据appkey删除记录  -->      
+    <delete id="deleteByAccountnameAppkey" parameterType="map">  
+       delete from uc_accountapp where account = (select account from uc_accountinfo where accountname=#{accountname} ) and appkey = #{appkey}  
+    </delete>      
+
+<!--  修改记录  -->      
+    <update id="updateNickByAccount" parameterType="map">  
+    	update uc_accountapp set 
+    		nickname=#{nickname}
+		  	where account=#{account} and appkey = #{appkey}  
+    </update>
+    <!--  修改记录  -->      
+    <update id="updateNickByName" parameterType="map">  
+    	update uc_accountapp set 
+    		nickname=#{nickname}
+		  	where account=(select account from uc_accountinfo where accountname=#{accountname} ) and appkey = #{appkey}  
+    </update>
+    
+    
+<!--  根据account 和appkey 查询记录  -->    
+    <select id="selectByAccountAppkey" resultType="com.usercenter.dao.po.AccountAppPO"  parameterType="map">  
+        select * from uc_accountapp where account=#{account} and appkey = #{appkey}  
+    </select> 
+<!--   根据account获取  -->    
+    <select id="selectByAccount" resultMap="AccountAppPOMap" parameterType="map">  
+         select * from uc_accountapp where account=#{account} 
+    </select>
+    
+<!--   根据appkey 分页获取  -->    
+    <select id="getListByappkey" resultMap="AccountAppPOMap" parameterType="map">  
+         select * from uc_accountapp where appkey = #{appkey} limit #{begin},  #{size}
+    </select>
+
+<!--   获得当前页码指定数量的消息业务信息记录  -->    
+    <select id="getList" resultMap="AccountAppPOMap" parameterType="map">  
+         select * from uc_accountapp limit #{begin},  #{size}
+    </select>
+    
+<!--   获得所有数据总数  -->    
+    <select id="getSize" resultType="int">  
+         select count(*) as count from uc_accountapp
+    </select>
+    
+    <!--   获得所有数据总数  -->    
+    <select id="getSizeByappkey" resultType="int" parameterType="String">   
+         select count(*) as count from uc_accountapp where appkey = #{appkey}
+    </select>
+
+</mapper> 

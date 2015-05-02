@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+     http://www.springframework.org/schema/context  
+   http://www.springframework.org/schema/context/spring-context-3.2.xsd  
+   	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+     http://www.springframework.org/schema/mvc  
+     http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">  
+     
+    <context:component-scan base-package="com.usercenter.dao"/> 
+    <context:property-placeholder location="classpath:mysql.properties"/>  
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> 
+       <property name="driverClass"  value="${c3p0.driverClass}" />  
+       <property name="jdbcUrl" value="${c3p0.url}" />  
+       <property name="user" value="${c3p0.user}" />  
+       <property name="password" value="${c3p0.password}" />  
+       <property name="acquireRetryDelay" value="${c3p0.acquireRetryDelay}" />  
+       <property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}" />  
+       <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
+       <property name="initialPoolSize" value="${c3p0.initialPoolSize}" />  
+       <property name="minPoolSize" value="${c3p0.minPoolSize}" />  
+       <property name="maxPoolSize" value="${c3p0.maxPoolSize}" />  
+       <property name="acquireIncrement" value="${c3p0.acquireIncrement}" />  
+    </bean>  
+    
+          
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+       <property name="dataSource" ref="dataSource" />  
+       <property name="typeAliasesPackage" value="com.usercenter.dao.po" />  
+       <property name="mapperLocations" value="classpath:com/usercenter/dao/mapper/*.xml"/>
+       
+    </bean>  
+   
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+   		<property name="basePackage" value="com.usercenter.dao" />  
+   		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>  
+	</bean>
+
+   
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+	
+	<!-- core 层 cache模块  -->
+	<bean id="springContext" class="com.usercenter.core.SpringContext"></bean>
+	<bean id="accountInfoCacheManage" class="com.usercenter.core.cache.AccountInfoCacheManage"/>
+	<bean id="cacheManageFactory" class="com.usercenter.core.cache.CacheManageFactory"/>
+	
+	<!-- Dao 层 -->
+
+	<!-- Manage层 handler模块  -->
+	<bean id="userCacheHandler" class="com.usercenter.manage.handler.impl.UserCacheHandlerImpl" ></bean>
+	<bean id="userQueryHandler" class="com.usercenter.manage.handler.impl.UserQueryHandlerImpl" ></bean>
+	<bean id="userManageHandler" class="com.usercenter.manage.handler.impl.UserManageHandlerImpl" ></bean>
+
+	
+	
+	<!-- message 层 -->
+	
+	<!-- service层 -->
+	<bean id="userClientService" class="com.usercenter.service.impl.UserClientServiceImpl"  lazy-init="false"/>
+	<bean id="userManageService" class="com.usercenter.service.impl.UserManageServiceImpl"  lazy-init="false"/>
+ 
+</beans> 
