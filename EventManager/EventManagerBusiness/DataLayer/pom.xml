@@ -25,6 +25,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.2.8</version>
+        </dependency>
+        <dependency>
             <groupId>external.ibm.jdbc</groupId>
             <artifactId>db2jcc.jar</artifactId>
             <scope>test</scope>
