@@ -11,5 +11,6 @@
 
     <modules>
         <module>DataLayer</module>
+        <module>Service</module>
     </modules>
 </project>
