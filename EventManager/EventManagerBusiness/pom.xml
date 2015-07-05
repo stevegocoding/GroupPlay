@@ -5,8 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.groupplay.eventmanager</groupId>
-    <artifactId>groupplay-eventmanager</artifactId>
+    <artifactId>groupplay-eventmanager-business</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>DataLayer</module>
+    </modules>
 </project>
