@@ -15,7 +15,7 @@ public class EventManagerDAOImpl implements EventManagerDAO {
     @Override
     public void createEvent(EventEntity eventEntity) {
         //To change body of implemented methods use File | Settings | File Templates.
-        //test
+        //test  for detailed info
     }
 
     @Override
