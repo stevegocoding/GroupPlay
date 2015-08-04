@@ -1,7 +1,10 @@
 package com.groupplay.eventmanager.business.dao.impl;
 
+import com.apple.laf.AquaButtonBorder;
 import com.groupplay.eventmanager.business.dao.EventManagerDAO;
 import com.groupplay.eventmanager.business.entity.EventEntity;
+
+import javax.inject.Named;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,6 +13,8 @@ import com.groupplay.eventmanager.business.entity.EventEntity;
  * Time: 10:45 PM
  * To change this template use File | Settings | File Templates.
  */
+
+@Named("eventManagerDao")
 public class EventManagerDAOImpl implements EventManagerDAO {
 
     @Override

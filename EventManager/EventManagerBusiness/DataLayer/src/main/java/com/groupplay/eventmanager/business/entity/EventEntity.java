@@ -1,5 +1,11 @@
 package com.groupplay.eventmanager.business.entity;
 
+import sun.security.tools.TimestampedSigner;
+
+import javax.persistence.CascadeType;
+import javax.persistence.OneToOne;
+import java.sql.Timestamp;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Chris
@@ -18,13 +24,20 @@ public class EventEntity {
 
     private String eventContent;
 
-    private String eventTime;
+    private Timestamp eventTime;
 
-    private String locationId;
+    //@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private EventLocationEntity eventLocation;
 
     private boolean isTemporary;
 
-    private String deadline;
+    private Timestamp deadline;
+
+    private Timestamp createdTime;
+
+    private boolean isDeleted;
+
+
 
     public String getId() {
         return id;
@@ -58,20 +71,20 @@ public class EventEntity {
         this.eventContent = eventContent;
     }
 
-    public String getEventTime() {
+    public Timestamp getEventTime() {
         return eventTime;
     }
 
-    public void setEventTime(String eventTime) {
+    public void setEventTime(Timestamp eventTime) {
         this.eventTime = eventTime;
     }
 
-    public String getLocationId() {
-        return locationId;
+    public EventLocationEntity getEventLocation() {
+        return eventLocation;
     }
 
-    public void setLocationId(String locationId) {
-        this.locationId = locationId;
+    public void setEventLocation(EventLocationEntity eventLocation) {
+        this.eventLocation = eventLocation;
     }
 
     public boolean isTemporary() {
@@ -82,11 +95,27 @@ public class EventEntity {
         isTemporary = temporary;
     }
 
-    public String getDeadline() {
+    public Timestamp getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(Timestamp deadline) {
         this.deadline = deadline;
+    }
+
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
