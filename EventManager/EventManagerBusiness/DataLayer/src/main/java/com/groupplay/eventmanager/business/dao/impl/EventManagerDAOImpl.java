@@ -3,6 +3,7 @@ package com.groupplay.eventmanager.business.dao.impl;
 import com.apple.laf.AquaButtonBorder;
 import com.groupplay.eventmanager.business.dao.EventManagerDAO;
 import com.groupplay.eventmanager.business.entity.EventEntity;
+import com.groupplay.eventmanager.business.entity.EventLocationEntity;
 
 import javax.inject.Named;
 
@@ -34,7 +35,17 @@ public class EventManagerDAOImpl implements EventManagerDAO {
     }
 
     @Override
+    public void updateEventLocation(EventLocationEntity entity) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void deleteEvent(String id) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void addEventLocation(String eventId, EventLocationEntity eventLocationEntity) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }
